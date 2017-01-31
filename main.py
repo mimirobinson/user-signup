@@ -16,7 +16,7 @@
 #
 import webapp2
 
-def buildpage(submission_content):
+def buildpage(user_name="", email=""):
     header = """
         <!DOCTYPE=html>
         <html lang = "en">
@@ -27,10 +27,10 @@ def buildpage(submission_content):
         <body>
             <h2>User Signup</h2>
             <form method="post">"""
-    user_name_input = "<p><label>User Name<input type='text' name='user_name'></label><p>"
+    user_name_input = "<p><label>User Name<input type='text' name='user_name' value='" + user_name + "'>'</label><p>"
     password_input = "<p><label>Password<input type='password' name='password'></label</div></p>"
     password_verify = "<p><label>Verify Password<input type='password' name='password_v'></label></p>"
-    email_input = "<p><label>Email (optional)<input type='text' name='email'></label></p>"
+    email_input = "<p><label>Email (optional)<input type='text' name='email' value='" + email +"'></label></p>"
     submission = "<input type='submit'/>"
     footer = "</form></body></html>"
 
@@ -39,7 +39,16 @@ def buildpage(submission_content):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        content = buildpage("")
+        content = buildpage()
+        self.response.write(content)
+
+    def post(self):
+        user_name = self.request.get("user_name")
+        password = self.request.get("password")
+        password_v = self.request.get("password_v")
+        email_address = self.request.get("email")
+
+        content = buildpage(user_name, email_address)
         self.response.write(content)
 
 app = webapp2.WSGIApplication([
