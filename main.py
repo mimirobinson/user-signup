@@ -16,7 +16,7 @@
 #
 import webapp2
 
-def buildpage(user_name="", email=""):
+def buildpage(username="", email=""):
     header = """
         <!DOCTYPE=html>
         <html lang = "en">
@@ -27,15 +27,31 @@ def buildpage(user_name="", email=""):
         <body>
             <h2>User Signup</h2>
             <form method="post">"""
-    user_name_input = "<p><label>User Name<input type='text' name='user_name' value='" + user_name + "'>'</label><p>"
-    password_input = "<p><label>Password<input type='password' name='password'></label</div></p>"
-    password_verify = "<p><label>Verify Password<input type='password' name='password_v'></label></p>"
-    email_input = "<p><label>Email (optional)<input type='text' name='email' value='" + email +"'></label></p>"
+    username = "<p><label>User Name<input type='text' name='username' value='" + username + "'>'</label><p>"
+    password = "<p><label>Password<input type='password' name='password'></label</div></p>"
+    verify = "<p><label>Verify Password<input type='password' name='verify'></label></p>"
+    email = "<p><label>Email (optional)<input type='text' name='email' value='" + email +"'></label></p>"
     submission = "<input type='submit'/>"
     footer = "</form></body></html>"
 
-    return (header + user_name_input + password_input + password_verify + email_input +
+    return (header + username + password + verify + email +
         submission + footer)
+
+def buildwelcome(username):
+    header = """
+        <!DOCTYPE=html>
+        <html lang = "en">
+        <head>
+            <meta charset="utf-8">
+            <title>User Signup | LC101</title>
+        </head>
+        <body>
+            <h2>User Signup</h2>
+            <p>Welcome, """
+    footer = """
+            </p></body></html> """
+
+    return (header + username + footer)
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -43,12 +59,13 @@ class MainHandler(webapp2.RequestHandler):
         self.response.write(content)
 
     def post(self):
-        user_name = self.request.get("user_name")
+        username = self.request.get("username")
         password = self.request.get("password")
-        password_v = self.request.get("password_v")
-        email_address = self.request.get("email")
+        verify = self.request.get("verify")
+        email = self.request.get("email")
 
-        content = buildpage(user_name, email_address)
+        #content = buildpage(username, email)
+        content = buildwelcome(username)
         self.response.write(content)
 
 app = webapp2.WSGIApplication([
